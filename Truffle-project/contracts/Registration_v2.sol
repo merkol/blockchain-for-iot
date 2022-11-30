@@ -8,13 +8,37 @@ contract Registration_v2{
     address myAddr = msg.sender;
     mapping(address => Device) public deviceList;
 
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
+
+    string nonce1 = uint2str(nonce);
+
     struct Device{
         address deviceAddr;
         string deviceName;
     }
 
-    function getNonce() public view returns(uint) {
-        return nonce;
+    function getNonce() public view returns(string memory) {
+        return nonce1;
     }
     function getAddress() public view returns(address) {
         return myAddr;
